@@ -1,0 +1,9 @@
+<IfModule mod_rewrite.c>
+    Options +FollowSymLinks
+
+    RewriteEngine On
+    #rewrite all requests not made for public files to index.php
+    RewriteCond %{REQUEST_URI} !^/public.*
+
+    RewriteRule ^(.*)$ app.php [NC,L]
+</IfModule>
