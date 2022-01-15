@@ -19,9 +19,5 @@ class User extends \TesteApp\App\Model
      * @var string
      */
     public $name;
-
-    function teste()
-    {
-        return 'teste';
-    }
+    
 }
