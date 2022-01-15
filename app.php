@@ -3,7 +3,9 @@ require __DIR__ . '/vendor/autoload.php';
 
 use TesteApp\App\Router;
 use TesteApp\App\View;
-use TesteApp\Controllers\LoginController;
+use TesteApp\Controllers\ImportingViewController;
+use TesteApp\Controllers\LoginViewController;
+use TesteApp\Controllers\PatientsViewController;
 use TesteApp\Utils\AuthGuard;
 
 $dotenv = new Symfony\Component\Dotenv\Dotenv();
@@ -19,20 +21,30 @@ $router->on('GET', '/', static function () {
     View::render('Index');
 })->on('GET', '/login', static function () {
     AuthGuard::redirectIfLoggedIn();
-    (new LoginController())->index();
+    (new LoginViewController())->index();
 })->on('POST', '/login', static function () {
     AuthGuard::redirectIfLoggedIn();
-    (new LoginController())->login();
-})->on('GET', '/register', static function () {
+    (new LoginViewController())->login();
+})->on('GET', '/cadastro', static function () {
     AuthGuard::redirectIfLoggedIn();
     View::render('Register/register');
-})->on('POST', '/register', static function () {
+})->on('POST', '/cadastro', static function () {
     AuthGuard::redirectIfLoggedIn();
-    (new LoginController())->register();
+    (new LoginViewController())->register();
 })->on('POST', '/logout', static function () {
     AuthGuard::redirectIfNotLoggedIn();
-    (new LoginController())->logout();
+    (new LoginViewController())->logout();
+})->on('GET', '/pacientes', static function () {
+    AuthGuard::redirectIfNotLoggedIn();
+    (new PatientsViewController())->index();
+})->on('GET', '/importar', static function() {
+    AuthGuard::redirectIfNotLoggedIn();
+    (new ImportingViewController())->index();
+})->on('POST', '/importar', static function() {
+    AuthGuard::redirectIfNotLoggedIn();
+    (new ImportingViewController())->import();
 });
+
 
 
 $router->run($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);

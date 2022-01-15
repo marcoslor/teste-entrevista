@@ -8,19 +8,21 @@ abstract class Model
 {
     protected $table;
     protected $fillable = [];
+    protected $guarded = ['id'];
 
     public $id;
 
     public function __construct($fields = [])
     {
         foreach ($fields as $key => $value) {
-            if (in_array($key, $this->fillable, true)) {
+            if (in_array($key, array_merge($this->fillable, $this->guarded), true)) {
                 $this->$key = $value;
             }
         }
     }
 
-    public function create(){
+    public function create()
+    {
         $query = "INSERT INTO {$this->table} (";
         $query .= implode(',', $this->fillable);
         $query .= ") VALUES (";
@@ -34,76 +36,46 @@ abstract class Model
             $params[] = $this->{$field};
         }
 
-        $stmt->execute($params);
-
-        $this->id = Connection::getInstance()->lastInsertId();
-    }
-
-    public function validate(array $data){
-        foreach ($this->fillable as $field) {
-            if (!array_key_exists($field, $data)){
-                return false;
+        try {
+            if ($stmt->execute($params)) {
+                $this->id = Connection::getInstance()->lastInsertId();
+                return true;
             }
+        } catch (\PDOException $e) {
+            return false;
         }
-        return true;
+
+        return false;
     }
 
-    private function prepareData(array $data){
-        $preparedData = [];
-        foreach ($this->fillable as $field) {
-            if (array_key_exists($field, $data)){
-                $preparedData[$field] = $data[$field];
-            }
-        }
-        return $preparedData;
-    }
-
-    private function execute($sql, array $data)
-    {
-        return Connection::getInstance()->prepare($sql)->execute($data);
-    }
-
-    public function where($field, $value)
+    public function where($field, $value, $operator='=')
     {
         //select all and return array of objects
-        $sql = "SELECT * FROM {$this->table} WHERE {$field} = ?";
-        $stmt = Connection::getInstance()->prepare($sql);
-        $stmt->execute([$value]);
-        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $sql = "SELECT * FROM {$this->table} WHERE {$field} {$operator} ?";
 
-        return array_map(static function ($res){
-            return new static($res);
-        }, $result);
-    }
-
-    public function save()
-    {
-        //update if model exists, if not, create
-        if ($this->exists()) {
-            $this->update();
-        } else {
-            $this->create();
+        try {
+            $stmt = Connection::getInstance()->prepare($sql);
+            $stmt->execute([$value]);
+            $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo $e->getMessage();
         }
+
+        try {
+            $map = array_map(static function ($res){
+                return new static($res);
+            }, $result);
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
+
+        return $map;
     }
 
-    public function exists()
+    public function all()
     {
-        $sql = "SELECT * FROM {$this->table} WHERE id = :id";
-        $stmt = Connection::getInstance()->prepare($sql);
-        $stmt->bindValue(":id", $this->id);
-        $stmt->execute();
-        return !empty($stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->where('id', '0', '>');
     }
 
-    private function update()
-    {
-        $sql = "UPDATE {$this->table} SET ";
-        $sql .= implode(', ', array_map(static function($field){
-            return "{$field} = :{$field}";
-        }, array_keys($this->fillable)));
-        $sql .= " WHERE id = :id";
-        $data = $this->prepareData($this->fillable);
-        $data['id'] = $this->id;
-        return $this->execute($sql, $data);
-    }
+
 }

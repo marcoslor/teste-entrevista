@@ -9,5 +9,4 @@ class View
         extract($data, EXTR_OVERWRITE);
         require __DIR__ . "/../Views/{$view}.php";
     }
-
 }

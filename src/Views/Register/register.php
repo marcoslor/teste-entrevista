@@ -10,7 +10,7 @@
                     <h1 class="panel-title">Cadastro</h1>
                 </div>
                 <div class="panel-body">
-                    <form action="/register" method="post">
+                    <form action="/cadastro" method="post">
                         <div class="form-group">
                             <label for="name">Nome</label>
                             <input type="text" class="form-control" id="name" name="name" placeholder="Nome" required>

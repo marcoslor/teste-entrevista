@@ -2,7 +2,7 @@
     Options +FollowSymLinks
 
     RewriteEngine On
-    #rewrite all requests not made for public files to index.php
+    #rewrite all requests not made for public files to app.php
     RewriteCond %{REQUEST_URI} !^/public.*
 
     RewriteRule ^(.*)$ app.php [NC,L]

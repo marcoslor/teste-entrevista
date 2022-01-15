@@ -7,12 +7,12 @@ use TesteApp\Database\Connection;
 use TesteApp\Models\User;
 use TesteApp\Utils\AuthGuard;
 
-class LoginController extends \TesteApp\App\Controller
+class LoginViewController extends \TesteApp\App\Controller
 {
     // GET /login
     public function index()
     {
-        View::render('Login/login');
+        View::render('/Login/index');
     }
 
     // POST /login
@@ -29,23 +29,23 @@ class LoginController extends \TesteApp\App\Controller
                 header('Location: /');
             } else {
                 $errors['default'][] = "Senha incorreta";
-                View::render('Login/login', [
+                View::render('/Login/index', [
                     'errors' => $errors
                 ]);
             }
         } else {
             $errors['default'][] = "Usuário não encontrado";
-            View::render('Login/login', [
+            View::render('/Login/index', [
                 'errors' => $errors
             ]);
         }
     }
 
-    // POST /register
+    // POST /cadastro
     public function register()
     {
         //ver se user já existe
-        if(!empty((new User())->where('email', $_POST['email']))) {
+        if (!empty((new User())->where('email', $_POST['email']))) {
             $errors['default'][] = "Usuário já existe";
 
             View::render('Register/register', [
@@ -56,7 +56,7 @@ class LoginController extends \TesteApp\App\Controller
         }
 
         //ver se senhas são válidas
-        if($_POST['password'] !== $_POST['password_confirmation']) {
+        if ($_POST['password'] !== $_POST['password_confirmation']) {
             $errors['default'][] = "As senhas não são iguais";
 
             View::render('Register/register', [
@@ -71,7 +71,7 @@ class LoginController extends \TesteApp\App\Controller
         $user->name = $_POST['name'];
         $user->email = $_POST['email'];
         $user->password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $user->save();
+        $user->create();
 
         //redirecionar para o login
         header('Location: /login');

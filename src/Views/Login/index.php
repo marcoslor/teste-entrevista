@@ -24,7 +24,7 @@
                                 <button type="submit" class="btn btn-success btn-block">Entrar</button>
                             </div>
                             <div class="col-md-6">
-                                <a href="/register" class="">Não tem uma conta?</a>
+                                <a href="/cadastro" class="">Não tem uma conta?</a>
                             </div>
                         </div>
                     </form>
