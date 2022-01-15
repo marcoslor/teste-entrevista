@@ -29,11 +29,11 @@
                         </div>
                     </form>
                     <?php if (!empty($errors)): ?>
-                        <ul class="mt-4">
-                            <?php foreach ($errors as $error): ?>
-                                <li class="alert alert-danger"><?= $error ?></li>
+                        <div class="mt-4">
+                            <?php foreach ($errors['default'] as $error): ?>
+                                <div class="alert alert-danger"><?= $error ?></div>
                             <?php endforeach; ?>
-                        </ul>
+                        </div>
                     <?php endif; ?>
                 </div>
             </div>

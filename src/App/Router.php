@@ -19,6 +19,12 @@ class Router
         return $this;
     }
 
+    public function before($callback): Router
+    {
+        $callback();
+        return $this;
+    }
+
     public function run($method, $uri)
     {
         if (!isset($this->routes[$method])) {

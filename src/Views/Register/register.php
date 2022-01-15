@@ -46,7 +46,7 @@
                         </div>
                     </form>
                     <?php if (!empty($errors)): ?>
-                        <?php foreach ($errors['general'] as $error): ?>
+                        <?php foreach ($errors['default'] as $error): ?>
                             <div class="alert alert-danger"><?= $error ?></div>
                         <?php endforeach; ?>
                     <?php endif; ?>

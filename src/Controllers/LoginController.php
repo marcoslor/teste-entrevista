@@ -18,7 +18,6 @@ class LoginController extends \TesteApp\App\Controller
     // POST /login
     public function login()
     {
-
         $email = $_POST['email'];
         $password = $_POST['password'];
         $user = (new User())->where('email', $email)[0];
@@ -27,12 +26,18 @@ class LoginController extends \TesteApp\App\Controller
             if (password_verify($password, $user->password)) {
                 $_SESSION['user'] = $user;
                 $_SESSION['isLogged'] = true;
-                echo 'Logado com sucesso!';
+                header('Location: /');
             } else {
-                echo 'Senha incorreta';
+                $errors['default'][] = "Senha incorreta";
+                View::render('Login/login', [
+                    'errors' => $errors
+                ]);
             }
         } else {
-            echo 'Usuário não encontrado';
+            $errors['default'][] = "Usuário não encontrado";
+            View::render('Login/login', [
+                'errors' => $errors
+            ]);
         }
     }
 
@@ -41,7 +46,7 @@ class LoginController extends \TesteApp\App\Controller
     {
         //ver se user já existe
         if(!empty((new User())->where('email', $_POST['email']))) {
-            $errors['general'][] = "Usuário já existe";
+            $errors['default'][] = "Usuário já existe";
 
             View::render('Register/register', [
                 'errors' => $errors
@@ -52,7 +57,7 @@ class LoginController extends \TesteApp\App\Controller
 
         //ver se senhas são válidas
         if($_POST['password'] !== $_POST['password_confirmation']) {
-            $errors['general'][] = "As senhas não são iguais";
+            $errors['default'][] = "As senhas não são iguais";
 
             View::render('Register/register', [
                 'errors' => $errors
