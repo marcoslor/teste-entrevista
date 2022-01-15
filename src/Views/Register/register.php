@@ -41,7 +41,7 @@
                                 <button type="submit" class="btn btn-success btn-block">Cadastrar</button>
                             </div>
                             <div class="col-md-3">
-                                <a href="register.php" class="">Login</a>
+                                <a href="/cadastro" class="">Login</a>
                             </div>
                         </div>
                     </form>
