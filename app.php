@@ -17,8 +17,7 @@ session_start();
 $router = new Router();
 
 $router->on('GET', '/', static function () {
-    AuthGuard::redirectIfNotLoggedIn();
-    View::render('Index');
+    header('Location: /pacientes');
 })->on('GET', '/login', static function () {
     AuthGuard::redirectIfLoggedIn();
     (new LoginViewController())->index();
@@ -43,8 +42,17 @@ $router->on('GET', '/', static function () {
 })->on('POST', '/importar', static function() {
     AuthGuard::redirectIfNotLoggedIn();
     (new ImportingViewController())->import();
+})->on('POST', '/pacientes/patch', static function() {
+    AuthGuard::redirectIfNotLoggedIn();
+    (new PatientsViewController())->patch();
+})->on('POST', '/pacientes/delete', static function () {
+    AuthGuard::redirectIfNotLoggedIn();
+    (new PatientsViewController())->delete();
+})->on('POST', '/pacientes/put', function () {
+    AuthGuard::redirectIfNotLoggedIn();
+    (new PatientsViewController())->put();
 });
 
-
+$router->default = '/';
 
 $router->run($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);

@@ -6,6 +6,7 @@ namespace TesteApp\App;
 class Router
 {
     public $routes;
+    public $default;
 
     public function on($method, $path, $callback)
     {
@@ -39,6 +40,8 @@ class Router
                 return call_user_func_array($callback, $parameters);
             }
         }
+
+        header('Location: ' . $this->default);
         return null;
     }
 }

@@ -19,13 +19,9 @@
                             <label for="password">Senha</label>
                             <input type="password" name="password" id="password" class="form-control">
                         </div>
-                        <div class="row align-items-center mt-4">
-                            <div class="col-md-6">
-                                <button type="submit" class="btn btn-success btn-block">Entrar</button>
-                            </div>
-                            <div class="col-md-6">
-                                <a href="/cadastro" class="">Não tem uma conta?</a>
-                            </div>
+                        <div class="d-flex mt-4 justify-content-between align-items-center">
+                            <button type="submit" class="btn btn-success btn-block">Entrar</button>
+                            <a href="/cadastro" class="">Não tem uma conta?</a>
                         </div>
                     </form>
                     <?php if (!empty($errors)): ?>

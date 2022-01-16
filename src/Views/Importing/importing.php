@@ -1,28 +1,36 @@
 <?php include __DIR__.'/../Partials/Head.php' ?>
 <body>
-<div class="container">
-    <h1>Importar Arquivo</h1>
+<div class="position-absolute w-100">
+    <?php include __DIR__.'/../Partials/Navbar.php' ?>
+</div>
 
-    <form action="/importar" method="POST" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="file">Arquivo</label>
-            <input type="file" class="form-control" id="file" name="file">
-        </div>
-        <button type="submit" class="btn btn-primary">Importar</button>
+<div class="container min-vh-100 d-flex">
 
-        <?php if (!empty($errors)): ?>
-            <div class="mt-4">
-                <?php foreach ($errors as $error): ?>
-                    <div class="alert alert-danger"><?= $error ?></div>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
+    <div class="row justify-content-center my-auto w-100">
+       <div class="col-6">
+           <h1 class="">Importar pacientes</h1>
 
-        <?php if (!empty($success)): ?>
-            <div class="mt-4">
-                <div class="alert alert-success"><?= $success ?></div>
-            </div>
-        <?php endif; ?>
-    </form>
+           <form action="/importar" method="POST" enctype="multipart/form-data">
+               <div class="input-group mb-3">
+                   <input type="file" class="form-control" id="file" name="file">
+                   <button type="submit" class="btn btn-success">Importar</button>
+               </div>
+           </form>
+
+           <?php if (!empty($errors)): ?>
+               <div class="mt-4">
+                   <?php foreach ($errors as $error): ?>
+                       <div class="alert alert-danger"><?= $error ?></div>
+                   <?php endforeach; ?>
+               </div>
+           <?php endif; ?>
+
+           <?php if (!empty($success)): ?>
+               <div class="mt-4">
+                   <div class="alert alert-success"><?= $success ?></div>
+               </div>
+           <?php endif; ?>
+       </div>
+    </div>
 </div>
 </body>

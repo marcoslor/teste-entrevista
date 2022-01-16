@@ -36,13 +36,9 @@
                                 <div class="alert alert-danger"><?= $errors['password_confirmation'] ?></div>
                             <?php endif; ?>
                         </div>
-                        <div class="row align-items-center mt-4 justify-content-between">
-                            <div class="col-md-6">
-                                <button type="submit" class="btn btn-success btn-block">Cadastrar</button>
-                            </div>
-                            <div class="col-md-3">
-                                <a href="/cadastro" class="">Login</a>
-                            </div>
+                        <div class="d-flex mt-4 justify-content-between align-items-center">
+                            <button type="submit" class="btn btn-success btn-block">Cadastrar</button>
+                            <a href="/login" class="">Login</a>
                         </div>
                     </form>
                     <?php if (!empty($errors)): ?>

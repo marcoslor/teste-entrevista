@@ -6,5 +6,4 @@
     <title>App</title>
 
     <link rel="stylesheet" href="/public/assets/css/bootstrap.min.css">
-    <script src="/public/assets/js/bootstrap.js"></script>
 </head>

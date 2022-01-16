@@ -28,4 +28,5 @@ class Patient extends Model
         // se não for informado o id associado ao usuário, considerar o id do usuário logado na seção
         $this->user_id = $_SESSION['user']->id;
     }
+
 }

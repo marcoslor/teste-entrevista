@@ -77,5 +77,47 @@ abstract class Model
         return $this->where('id', '0', '>');
     }
 
+    public function update()
+    {
+        $query = "UPDATE {$this->table} SET ";
+        $query .= implode(',', array_map(static function ($field) {
+            return "{$field} = ?";
+        }, $this->fillable));
+        $query .= " WHERE id = ?";
 
+        $stmt = Connection::getInstance()->prepare($query);
+
+        $params = [];
+        foreach ($this->fillable as $field) {
+            $params[] = $this->{$field};
+        }
+        $params[] = $this->id;
+
+        try {
+            if ($stmt->execute($params)) {
+                return true;
+            }
+        } catch (\PDOException $e) {
+            return false;
+        }
+
+        return false;
+    }
+
+    public function delete()
+    {
+        $query = "DELETE FROM {$this->table} WHERE id = ?";
+
+        $stmt = Connection::getInstance()->prepare($query);
+
+        try {
+            if ($stmt->execute([$this->id])) {
+                return true;
+            }
+        } catch (\PDOException $e) {
+            return false;
+        }
+
+        return false;
+    }
 }
