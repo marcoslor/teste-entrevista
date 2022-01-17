@@ -35,7 +35,7 @@ Aplicação feita para um processo de seleção de uma vaga de dev. PHP.
 
 - (Se a porta 8000 estiver em uso, mude a linha 9 do arquivo `docker-compose.yml` para `port: [uma-porta-livre]:80`)
 
-### Alternativ
+### Alternativo
 
 #### Dependências
 
@@ -46,22 +46,16 @@ Aplicação feita para um processo de seleção de uma vaga de dev. PHP.
 - Apache 2, com:
   - mod_rewrite
 
-#### Instalação
-
-**Ubuntu e derivados:**
-
+#### Execução
+Após instalar as dependencias, adicione o diretório do repositório ao arquivo de configuração do Apache:
 ```
-sudo apt-get update
-sudo apt -y install software-properties-common
-sudo add-apt-repository ppa:ondrej/php
-sudo apt-get update
-
-sudo apt-get install apache2
-sudo apt-get install php7.4
-sudo apt-get install -y php7.4-{mbstring,mysql}
+<Directory [caminho-do-repositorio]>
+    AllowOverride All
+    Require all granted
+</Directory>
 ```
 
-//TODO: completar guia de instalação
+<!--- TODO: completar guia de instalação --->
 
 ## Estrutura do sistema
 
@@ -71,6 +65,8 @@ sudo apt-get install -y php7.4-{mbstring,mysql}
 - `/importar` - Página de importação de arquivo de pacientes
 
 ## Estrutura do projeto
+
+<!--- TODO: completar guia de instalação --->
 
 ## Testes manuais
 

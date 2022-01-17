@@ -2,17 +2,40 @@
 
 namespace PacientesSys\App;
 
+use Exception;
 use PacientesSys\Database\Connection;
+use PDO;
+use PDOException;
 
+/**
+ * Classe responsável por manipular os dados no banco de dados
+ */
 abstract class Model
 {
-    protected $guarded = ['id'];
-    protected $pks = ['id'];
-    protected $table;
+    /**
+     * Array contendo campos da tabela que podem ser manipulados pelo usuário
+     * @var array
+     */
     public $fillable = [];
+    /**
+     * Campo ID do modelo
+     * @var integer
+     */
     public $id;
+    /**
+     * Array contendo as colunas da chave primária da tabela
+     * @var string[]
+     */
+    protected $pks = ['id'];
+    /**
+     * Nome da tabela do modelo
+     * @var string
+     */
+    protected $table;
 
-
+    /**
+     * @param $fields
+     */
     public function __construct($fields = [])
     {
         foreach ($fields as $key => $value) {
@@ -20,20 +43,23 @@ abstract class Model
         }
     }
 
+    /**
+     * @return bool
+     */
     public function create()
     {
         $fields = array_merge($this->fillable, $this->pks);
 
         $query = "INSERT INTO {$this->table} ("
-            .implode(',', $fields)
-            .") VALUES ("
-            .implode(',', array_fill(0, count($fields), '?'))
-            .")";
+            . implode(',', $fields)
+            . ") VALUES ("
+            . implode(',', array_fill(0, count($fields), '?'))
+            . ")";
 
 
         $stmt = Connection::getInstance()->prepare($query);
 
-        $params = array_map(function ($field){
+        $params = array_map(function ($field) {
             return $this->{$field};
         }, $fields);
 
@@ -45,7 +71,13 @@ abstract class Model
         return false;
     }
 
-    public function where($field, $value, $operator='=')
+    /**
+     * @param $field
+     * @param $value
+     * @param $operator
+     * @return Model[]
+     */
+    public function where($field, $value, $operator = '=')
     {
         //select all and return array of objects
         $sql = "SELECT * FROM {$this->table} WHERE {$field} {$operator} ?";
@@ -53,22 +85,25 @@ abstract class Model
         try {
             $stmt = Connection::getInstance()->prepare($sql);
             $stmt->execute([$value]);
-            $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        } catch (\PDOException $e) {
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
             echo $e->getMessage();
         }
 
         try {
-            $map = array_map(static function ($res){
+            $map = array_map(static function ($res) {
                 return new static($res);
             }, $result);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
 
         return $map;
     }
 
+    /**
+     * @return bool
+     */
     public function update()
     {
         $query = "UPDATE {$this->table} SET ";
@@ -94,18 +129,22 @@ abstract class Model
             if ($stmt->execute($params)) {
                 return true;
             }
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             return false;
         }
 
         return false;
     }
 
+    /**
+     * @return bool
+     */
     public function delete()
     {
         $query = "DELETE FROM {$this->table} WHERE "
-            .implode(' AND ', array_map(static function ($field)
-            {return "{$field} = ?";}, $this->pks));
+            . implode(' AND ', array_map(static function ($field) {
+                return "{$field} = ?";
+            }, $this->pks));
 
         $stmt = Connection::getInstance()->prepare($query);
 
@@ -117,7 +156,7 @@ abstract class Model
             if ($stmt->execute($params)) {
                 return true;
             }
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             echo $e->getMessage();
             return false;
         }
@@ -125,6 +164,11 @@ abstract class Model
         return false;
     }
 
+    /**
+     * @param $values
+     * @param $safe
+     * @return void
+     */
     public function fill($values, $safe = true)
     {
         foreach ($values as $key => $value) {
