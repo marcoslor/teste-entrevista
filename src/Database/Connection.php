@@ -1,11 +1,9 @@
 <?php
-namespace TesteApp\Database;
+namespace PacientesSys\Database;
 
 use PDO;
 
-/**
- *
- */
+
 class Connection {
     /**
      * @var PDO

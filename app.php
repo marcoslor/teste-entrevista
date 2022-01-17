@@ -1,19 +1,23 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
 
-use TesteApp\App\Router;
-use TesteApp\App\View;
-use TesteApp\Controllers\ImportingViewController;
-use TesteApp\Controllers\LoginViewController;
-use TesteApp\Controllers\PatientsViewController;
-use TesteApp\Utils\AuthGuard;
+use PacientesSys\App\Router;
+use PacientesSys\Controllers\ImportingViewController;
+use PacientesSys\Controllers\LoginViewController;
+use PacientesSys\Controllers\PatientsViewController;
+use PacientesSys\Controllers\RegisterViewController;
+use PacientesSys\Utils\AuthGuard;
 
-$dotenv = new Symfony\Component\Dotenv\Dotenv();
-$dotenv->load(__DIR__ . '/.env');
+// Carrega .env para variáveis de ambiente
+$file = fopen(__DIR__ . '/.env', 'rb');
+while (false !== ($line = fgets($file))) {
+    $line = explode('=', trim($line));
+    $_ENV[$line[0]] = $line[1];
+}
 
 session_start();
 
-// ROUTES SESSION
+// Seção de rotas
 $router = new Router();
 
 $router->on('GET', '/', static function () {
@@ -26,10 +30,10 @@ $router->on('GET', '/', static function () {
     (new LoginViewController())->login();
 })->on('GET', '/cadastro', static function () {
     AuthGuard::redirectIfLoggedIn();
-    View::render('Register/register');
+    (new RegisterViewController())->index();
 })->on('POST', '/cadastro', static function () {
     AuthGuard::redirectIfLoggedIn();
-    (new LoginViewController())->register();
+    (new RegisterViewController())->register();
 })->on('POST', '/logout', static function () {
     AuthGuard::redirectIfNotLoggedIn();
     (new LoginViewController())->logout();

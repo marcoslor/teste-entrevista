@@ -1,11 +1,11 @@
 <?php
 
-namespace TesteApp\Models;
+namespace PacientesSys\Models;
 
-class User extends \TesteApp\App\Model
+class User extends \PacientesSys\App\Model
 {
     protected $table = 'users';
-    protected $fillable = ['name', 'email', 'password'];
+    public $fillable = ['name', 'email', 'password'];
 
     /**
      * @var string

@@ -1,6 +1,6 @@
 <?php
 
-namespace TesteApp\App;
+namespace PacientesSys\App;
 
 
 class Router
@@ -34,7 +34,6 @@ class Router
 
         //procura por rota que corresponda ao URI
         foreach ($this->routes[$method] as $route => $callback) {
-
             if (preg_match($route, $uri, $parameters)) {
                 array_shift($parameters);
                 return call_user_func_array($callback, $parameters);

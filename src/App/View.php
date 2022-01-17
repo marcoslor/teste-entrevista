@@ -1,6 +1,6 @@
 <?php
 
-namespace TesteApp\App;
+namespace PacientesSys\App;
 
 class View
 {

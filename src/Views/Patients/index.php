@@ -76,6 +76,13 @@
 </div>
 
 <div class="container pt-5">
+    <?php if(isset($errors)): ?>
+        <?php foreach ($errors as $error): ?>
+            <div class="alert alert-danger" role="alert">
+                <?php echo $error ?>
+            </div>
+        <?php endforeach ?>
+    <?php endif ?>
     <h1 class="">Lista de Pacientes</h1>
 
     <table class="table table-striped table-hover">
@@ -91,7 +98,7 @@
         <tbody>
         <?php if (isset($patients)) {
             foreach ($patients as $patient): ?>
-                <tr class="patient" data-patient-id = <?= $patient->id?>>
+                <tr class="patient" data-patient-id = <?= $patient->id ?>>
                     <td class="align-middle"><?= $patient->name ?></td>
                     <td class="align-middle"><?= $patient->age ?></td>
                     <td class="align-middle"><?= $patient->phone ?></td>
@@ -99,12 +106,12 @@
                     <td class="align-middle">
                         <div class="d-inline-flex">
                             <button type="button" class="text-nowrap btn btn-outline-primary edit-button">
-                            <span class="pencil-svg">
-                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-                                </svg>
-                            </span>
+                                <span class="pencil-svg">
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                    </svg>
+                                </span>
                                 Editar
                             </button>
                             <form action="/pacientes/delete" method="post" class="d-inline-block">
@@ -149,13 +156,15 @@
   });
 
   document.querySelectorAll(".edit-button").forEach(editButton => {
-    let patient = editButton.parentElement.parentElement;
-    let patient_id = patient.dataset.patientId;
+    let patient = editButton.parentElement.parentElement.parentElement;
+    let patientId = patient.dataset.patientId;
+
+    console.log(patientId);
 
     editButton.addEventListener("click", () => {
       modal.classList.add("show");
 
-      modal.querySelector("#id").value = patient_id;
+      modal.querySelector("#id").value = patientId;
       modal.querySelector("#name").value = patient.querySelector("td:nth-child(1)").textContent;
       modal.querySelector("#age").value = patient.querySelector("td:nth-child(2)").textContent;
       modal.querySelector("#phone").value = patient.querySelector("td:nth-child(3)").textContent;

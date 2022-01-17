@@ -26,7 +26,7 @@
                     </form>
                     <?php if (!empty($errors)): ?>
                         <div class="mt-4">
-                            <?php foreach ($errors['default'] as $error): ?>
+                            <?php foreach ($errors as $error): ?>
                                 <div class="alert alert-danger"><?= $error ?></div>
                             <?php endforeach; ?>
                         </div>

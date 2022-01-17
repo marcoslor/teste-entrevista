@@ -1,6 +1,6 @@
 <?php
 
-namespace TesteApp\App;
+namespace PacientesSys\App;
 
 abstract class Controller
 {
@@ -8,20 +8,7 @@ abstract class Controller
 
     }
 
-    public function index()
-    {
-
-    }
-    public function create()
-    {
-
-    }
-    public function edit()
-    {
-
-    }
-    public function delete()
-    {
-
+    public function index() {
+        unset($_SESSION['errors'], $_SESSION['success']);
     }
 }

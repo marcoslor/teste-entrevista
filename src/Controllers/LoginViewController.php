@@ -1,22 +1,22 @@
 <?php
 
-namespace TesteApp\Controllers;
+namespace PacientesSys\Controllers;
 
-use TesteApp\App\View;
-use TesteApp\Database\Connection;
-use TesteApp\Models\User;
-use TesteApp\Utils\AuthGuard;
+use PacientesSys\App\View;
+use PacientesSys\Models\User;
 
-class LoginViewController extends \TesteApp\App\Controller
+class LoginViewController extends \PacientesSys\App\Controller
 {
     // GET /login
-    public function index()
+    public function index() : void
     {
-        View::render('/Login/index');
+        View::render('/Login/index', ['errors' => $_SESSION['errors']['login'] ?? null]);
+
+        parent::index();
     }
 
     // POST /login
-    public function login()
+    public function login() : void
     {
         $email = $_POST['email'];
         $password = $_POST['password'];
@@ -27,59 +27,19 @@ class LoginViewController extends \TesteApp\App\Controller
                 $_SESSION['user'] = $user;
                 $_SESSION['isLogged'] = true;
                 header('Location: /');
-            } else {
-                $errors['default'][] = "Senha incorreta";
-                View::render('/Login/index', [
-                    'errors' => $errors
-                ]);
+                return;
             }
+            $errors[] = "Senha incorreta";
         } else {
-            $errors['default'][] = "Usuário não encontrado";
-            View::render('/Login/index', [
-                'errors' => $errors
-            ]);
-        }
-    }
-
-    // POST /cadastro
-    public function register()
-    {
-        //ver se user já existe
-        if (!empty((new User())->where('email', $_POST['email']))) {
-            $errors['default'][] = "Usuário já existe";
-
-            View::render('Register/register', [
-                'errors' => $errors
-            ]);
-
-            return false;
+            $errors[] = "Usuário não encontrado";
         }
 
-        //ver se senhas são válidas
-        if ($_POST['password'] !== $_POST['password_confirmation']) {
-            $errors['default'][] = "As senhas não são iguais";
-
-            View::render('Register/register', [
-                'errors' => $errors
-            ]);
-
-            return false;
-        }
-
-        //inserir user
-        $user = new User();
-        $user->name = $_POST['name'];
-        $user->email = $_POST['email'];
-        $user->password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $user->create();
-
-        //redirecionar para o login
+        $_SESSION['errors']['login'] = $errors;
         header('Location: /login');
-        return true;
     }
 
     // POST /logout
-    public function logout()
+    public function logout() : void
     {
         session_destroy();
         header('Location: /login');

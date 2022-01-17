@@ -1,6 +1,6 @@
 <?php
 
-namespace TesteApp\Utils;
+namespace PacientesSys\Utils;
 
 class AuthGuard
 {

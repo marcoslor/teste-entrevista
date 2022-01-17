@@ -1,48 +1,45 @@
 <?php
 
-namespace TesteApp\App;
+namespace PacientesSys\App;
 
-use TesteApp\Database\Connection;
+use PacientesSys\Database\Connection;
 
 abstract class Model
 {
-    protected $table;
-    protected $fillable = [];
     protected $guarded = ['id'];
-
+    protected $pks = ['id'];
+    protected $table;
+    public $fillable = [];
     public $id;
+
 
     public function __construct($fields = [])
     {
         foreach ($fields as $key => $value) {
-            if (in_array($key, array_merge($this->fillable, $this->guarded), true)) {
-                $this->$key = $value;
-            }
+            $this->$key = $value;
         }
     }
 
     public function create()
     {
-        $query = "INSERT INTO {$this->table} (";
-        $query .= implode(',', $this->fillable);
-        $query .= ") VALUES (";
-        $query .= implode(',', array_fill(0, count($this->fillable), '?'));
-        $query .= ")";
+        $fields = array_merge($this->fillable, $this->pks);
+
+        $query = "INSERT INTO {$this->table} ("
+            .implode(',', $fields)
+            .") VALUES ("
+            .implode(',', array_fill(0, count($fields), '?'))
+            .")";
+
 
         $stmt = Connection::getInstance()->prepare($query);
 
-        $params = [];
-        foreach ($this->fillable as $field) {
-            $params[] = $this->{$field};
-        }
+        $params = array_map(function ($field){
+            return $this->{$field};
+        }, $fields);
 
-        try {
-            if ($stmt->execute($params)) {
-                $this->id = Connection::getInstance()->lastInsertId();
-                return true;
-            }
-        } catch (\PDOException $e) {
-            return false;
+        if ($stmt->execute($params)) {
+            $this->id = Connection::getInstance()->lastInsertId();
+            return true;
         }
 
         return false;
@@ -72,18 +69,16 @@ abstract class Model
         return $map;
     }
 
-    public function all()
-    {
-        return $this->where('id', '0', '>');
-    }
-
     public function update()
     {
         $query = "UPDATE {$this->table} SET ";
         $query .= implode(',', array_map(static function ($field) {
             return "{$field} = ?";
         }, $this->fillable));
-        $query .= " WHERE id = ?";
+        $query .= " WHERE ";
+        $query .= implode(' AND ', array_map(static function ($field) {
+            return "{$field} = ?";
+        }, $this->pks));
 
         $stmt = Connection::getInstance()->prepare($query);
 
@@ -91,7 +86,9 @@ abstract class Model
         foreach ($this->fillable as $field) {
             $params[] = $this->{$field};
         }
-        $params[] = $this->id;
+        foreach ($this->pks as $field) {
+            $params[] = $this->{$field};
+        }
 
         try {
             if ($stmt->execute($params)) {
@@ -106,18 +103,38 @@ abstract class Model
 
     public function delete()
     {
-        $query = "DELETE FROM {$this->table} WHERE id = ?";
+        $query = "DELETE FROM {$this->table} WHERE "
+            .implode(' AND ', array_map(static function ($field)
+            {return "{$field} = ?";}, $this->pks));
 
         $stmt = Connection::getInstance()->prepare($query);
 
+        $params = array_map(function ($field) {
+            return $this->{$field};
+        }, $this->pks);
+
         try {
-            if ($stmt->execute([$this->id])) {
+            if ($stmt->execute($params)) {
                 return true;
             }
         } catch (\PDOException $e) {
+            echo $e->getMessage();
             return false;
         }
 
         return false;
+    }
+
+    public function fill($values, $safe = true)
+    {
+        foreach ($values as $key => $value) {
+            if ($safe) {
+                if (in_array($key, $this->fillable, false)) {
+                    $this->{$key} = $value;
+                }
+            } else {
+                $this->{$key} = $value;
+            }
+        }
     }
 }

@@ -1,20 +1,26 @@
 <?php
 
-namespace TesteApp\Models;
+namespace PacientesSys\Models;
 
-use TesteApp\App\Model;
+use PacientesSys\App\Model;
+use PacientesSys\Database\Connection;
 
 class Patient extends Model
 {
-    protected $table = 'patients';
+    public $table = 'patients';
 
     public $fillable = [
         'name',
         'age',
         'phone',
         'registration',
-        'user_id'
     ];
+
+    public $protected = [
+        'id'
+    ];
+
+    protected $pks = ['id', 'user_id'];
 
     public string $name;
     public int $age;
@@ -22,11 +28,10 @@ class Patient extends Model
     public string $registration;
     public int $user_id;
 
-    public function __construct($fields = [])
-    {
-        parent::__construct($fields);
-        // se não for informado o id associado ao usuário, considerar o id do usuário logado na seção
-        $this->user_id = $_SESSION['user']->id;
-    }
 
+    public function allBelongingToUser()
+    {
+        //select all and return array of objects
+        return $this->where('user_id', $_SESSION['user']->id);
+    }
 }

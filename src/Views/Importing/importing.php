@@ -17,7 +17,7 @@
                </div>
            </form>
 
-           <?php if (!empty($errors)): ?>
+           <?php if (isset($errors)): ?>
                <div class="mt-4">
                    <?php foreach ($errors as $error): ?>
                        <div class="alert alert-danger"><?= $error ?></div>
@@ -25,7 +25,7 @@
                </div>
            <?php endif; ?>
 
-           <?php if (!empty($success)): ?>
+           <?php if (isset($success)): ?>
                <div class="mt-4">
                    <div class="alert alert-success"><?= $success ?></div>
                </div>

@@ -31,12 +31,22 @@
 ---
 
 **Gerenciamento de pacientes**
-- [ ] Um usuário pode cadastrar um paciente na tela de pacientes
-- [ ] Um usuário pode editar um paciente na tela de pacientes
-- [ ] Um usuário pode excluir um paciente na tela de pacientes
-- [ ] Um usuário pode pesquisar um paciente na tela de pacientes
+- [x] Um usuário pode cadastrar um paciente se na tela de pacientes
+- [x] Um usuário pode editar um paciente seu na tela de pacientes
+- [x] Um usuário pode excluir um paciente seu na tela de pacientes
+- [x] Um usuário pode ver todos os pacientes seus na tela de pacientes
 
+- [x] Um usuário não pode editar um paciente que não é seu
+- [x] Um usuário não pode excluir um paciente que não é seu
 ---
+
+**Relações do banco de dados**
+- [x] Um usuário tem vários pacientes
+- [x] Um paciente pertence a um usuário
+- [x] Um paciente tem uma matrícula
+- [x] Vários usuários podem ter pacientes com a mesma matrícula
+- [x] Um usuário não pode ter pacientes com a mesma matrícula
+- 
 
 **Views:**
 
