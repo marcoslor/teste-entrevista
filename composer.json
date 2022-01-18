@@ -15,6 +15,7 @@
     "require": {
       "ext-pdo": "*",
       "php": "7.4.*",
-      "ext-sqlite3": "*"
+      "ext-sqlite3": "*",
+      "ext-pdo_sqlite": "*"
     }
 }
