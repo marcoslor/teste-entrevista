@@ -8,12 +8,14 @@ use PacientesSys\Controllers\PatientsViewController;
 use PacientesSys\Controllers\RegisterViewController;
 use PacientesSys\Utils\AuthGuard;
 
-// Carrega .env para variáveis de ambiente
-$file = fopen(__DIR__ . '/.env', 'rb');
-while (false !== ($line = fgets($file))) {
-    $line = explode('=', trim($line));
-    $_ENV[$line[0]] = $line[1];
-}
+$db = parse_url(getenv("DATABASE_URL"));
+
+$_ENV['DB_DRIVER'] = 'pgsql';
+$_ENV['DB_HOST'] = $db['host'];
+$_ENV['DB_PORT'] = $db['port'];
+$_ENV['DB_USER'] = $db['user'];
+$_ENV['DB_PASSWORD'] = $db['pass'];
+$_ENV['DB_NAME'] = ltrim($db['path'], '/');
 
 session_start();
 
