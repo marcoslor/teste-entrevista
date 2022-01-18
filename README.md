@@ -4,7 +4,13 @@
 
 Aplicação feita para um processo de seleção de uma vaga de dev. PHP.
 
-Demo rodando em: [http://ec2-52-67-64-251.sa-east-1.compute.amazonaws.com](http://ec2-52-67-64-251.sa-east-1.compute.amazonaws.com)
+---
+
+Demo rodando **temporariamente** em: [http://ec2-52-67-64-251.sa-east-1.compute.amazonaws.com](http://ec2-52-67-64-251.sa-east-1.compute.amazonaws.com)
+
+DDL do banco de dados em: [`docker/db/create_db.sql`](docker/db/create_db.sql)
+
+Arquivo CSV com teste de dados em: [`test_data.csv`](test_data.csv)
 
 ## Tábula de conteúdo
 
@@ -35,7 +41,7 @@ Demo rodando em: [http://ec2-52-67-64-251.sa-east-1.compute.amazonaws.com](http:
   - Execute o comando `docker-compose up` na raiz do projeto;
   - Acesse [`http://localhost:8000`](http://localhost:8000) para testar a aplicação;
 
-- (Se a porta 8000 estiver em uso, mude a linha 9 do arquivo `docker-compose.yml` para `port: [uma-porta-livre]:80`)
+(Se a porta 8000 estiver em uso, mude a linha 9 do arquivo `docker-compose.yml` para `port: [uma-porta-livre]:80`)
 
 ### Alternativo
 
@@ -49,15 +55,25 @@ Demo rodando em: [http://ec2-52-67-64-251.sa-east-1.compute.amazonaws.com](http:
   - mod_rewrite
 
 #### Execução
-Após instalar as dependencias, adicione o diretório do repositório ao arquivo de configuração do Apache:
-```
+
+Após instalar as dependências, aponte o diretório do repositório ao arquivo de configuração do Apache:
+
+```apacheconf
 <Directory [caminho-do-repositorio]>
-    AllowOverride All
+    AllowOverride All # Permite que o arquivo de configuração `.htaccess` seja acessado
     Require all granted
 </Directory>
 ```
 
-<!--- TODO: completar guia de instalação --->
+Insira no arquivo [`.env`](.env) as novas variáveis de ambiente:
+
+```dotenv
+DB_HOST=[hostname do banco de dados]
+DB_PORT=[porta do banco de dados]
+DB_USER=[usuário do banco de dados]
+DB_PASSWORD=[senha do banco de dados]
+DB_NAME=[nome do banco de dados]
+```
 
 ## Estrutura do sistema
 
@@ -68,7 +84,31 @@ Após instalar as dependencias, adicione o diretório do repositório ao arquivo
 
 ## Estrutura do projeto
 
-<!--- TODO: completar guia de instalação --->
+```
+teste-entrevista
+├─ .env // arquivo de configuração do projeto
+├─ .htaccess // Apache
+├─ app.php // Entry point da aplicação, para onde é redirecionado todo o fluxo de requisições
+├─ test_data.csv // Arquivo com dados de teste
+├─ docker
+│  ├─ db
+│  │  └─ create_db.sql // DDL do banco de dados
+├─ public // arquivos públicos
+├─ src
+│  ├─ App
+│  │  ├─ Controller.php // Classe super de controles
+│  │  ├─ Model.php // Classe super de modelos
+│  │  ├─ Router.php // Classe de lógica de rotas
+│  │  └─ View.php // Classe de lógica de renderização das views
+│  ├─ Controllers // Classes de controladores de cada view diferente
+│  ├─ Database
+│  │  └─ Connection.php // Classe estática de conexão com o banco de dados
+│  ├─ Models // Modelos do banco de dados
+│  ├─ Utils 
+│  │  └─ AuthGuard.php // Classe helper de autenticação
+│  └─ Views // Views do sistema para cada rota
+└─ vendor // Pacote vendorizado do Composer para o autoload das classes
+```
 
 ## Testes manuais
 
