@@ -54,12 +54,17 @@ $router->on('GET', '/', static function () {
     AuthGuard::redirectIfNotLoggedIn();
     (new PatientsViewController())->put();
 })->on('GET', '/migrate', function () {
-    $database = new SQLite3('app.sqlite');
 
-    // run query from sql file
-    $sql = file_get_contents('docker/db/create_db.sql');
-    $database->exec($sql);
-    $database->close();
+    try {
+        $database = new SQLite3('app.sqlite');
+
+        // run query from sql file
+        $sql = file_get_contents('docker/db/create_db.sql');
+        $database->exec($sql);
+        $database->close();
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
 
 });
 
