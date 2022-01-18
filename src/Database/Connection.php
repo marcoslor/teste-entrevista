@@ -18,9 +18,7 @@ class Connection {
         if (!isset(self::$instance)) {
             //new PDO from .env
             self::$instance = new PDO(
-                $_ENV['DB_DRIVER'] . ':host=' . $_ENV['DB_HOST'] . ";port=" .$_ENV['DB_PORT'] . ';dbname=' . $_ENV['DB_NAME'],
-                $_ENV['DB_USER'],
-                $_ENV['DB_PASSWORD']
+                $_ENV['DB_DRIVER'] . ':host=' . $_ENV['DB_HOST'] . ';'
             );
             self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }

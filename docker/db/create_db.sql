@@ -1,7 +1,3 @@
-create database if not exists app;
-
-use app;
-
 create table if not exists users
 (
     email    varchar(200)                 not null,

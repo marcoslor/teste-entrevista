@@ -10,12 +10,8 @@ use PacientesSys\Utils\AuthGuard;
 
 $db = parse_url(getenv("DATABASE_URL"));
 
-$_ENV['DB_DRIVER'] = 'pgsql';
-$_ENV['DB_HOST'] = $db['host'];
-$_ENV['DB_PORT'] = $db['port'];
-$_ENV['DB_USER'] = $db['user'];
-$_ENV['DB_PASSWORD'] = $db['pass'];
-$_ENV['DB_NAME'] = ltrim($db['path'], '/');
+$_ENV['DB_DRIVER'] = 'sqlite';
+$_ENV['DB_HOST'] = $db['app.sqlite'];
 
 session_start();
 
@@ -57,6 +53,14 @@ $router->on('GET', '/', static function () {
 })->on('POST', '/pacientes/put', function () {
     AuthGuard::redirectIfNotLoggedIn();
     (new PatientsViewController())->put();
+})->on('GET', '/migrate', function () {
+    $database = new SQLite3('app.sqlite');
+
+    // run query from sql file
+    $sql = file_get_contents('docker/db/create_db.sql');
+    $database->exec($sql);
+    $database->close();
+
 });
 
 $router->default = '/';
