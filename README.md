@@ -18,7 +18,7 @@ Arquivo CSV com teste de dados em: [`test_data.csv`](test_data.csv)
 - [Setup](#setup)
   - [Recomendado](#recomendado)
   - [Alternativo](#alternativo)
-- [Estrutura do sistema](#estrutura-do-sistema)
+- [Rotas da aplicação](#estrutura-da-aplicação)
 - [Estrutura do projeto](#estrutura-do-projeto)
 - [Testes manuais](#testes-manuais)
 
@@ -51,7 +51,7 @@ Arquivo CSV com teste de dados em: [`test_data.csv`](test_data.csv)
   - pdo
   - pdo_mysql
 - MySQL 5.7
-- Apache 2, com:
+- Apache 2.x, com:
   - mod_rewrite
 
 #### Execução
@@ -75,7 +75,7 @@ DB_PASSWORD=[senha do banco de dados]
 DB_NAME=[nome do banco de dados]
 ```
 
-## Estrutura do sistema
+## Rotas da aplicação
 
 - `/login` - Página de login
 - `/cadastro` - Página de cadastro
