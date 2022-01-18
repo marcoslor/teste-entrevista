@@ -12,7 +12,7 @@ DDL do banco de dados em: [`docker/db/create_db.sql`](docker/db/create_db.sql)
 
 Arquivo CSV com teste de dados em: [`test_data.csv`](test_data.csv)
 
-## Tábula de conteúdo
+## Índice de conteúdo
 
 - [Características](#características)
 - [Setup](#setup)
