@@ -1,4 +1,4 @@
-version: "2.4"
+version: "2.5"
 
 services:
   web:
@@ -14,7 +14,7 @@ services:
     command: mysqld --default-authentication-plugin=mysql_native_password
     restart: always
     volumes:
-      - ./docker/db/:/docker-entrypoint-initdb.d/
+      - ./docker/db/create_db.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       MYSQL_ROOT_PASSWORD: password
     ports:
