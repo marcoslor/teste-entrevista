@@ -2,7 +2,7 @@ create table if not exists  users
 (
     email varchar(200) not null,
     password char(60) not null,
-    id integer auto_increment primary key,
+    id int auto_increment primary key,
     name varchar(150)  not null,
     constraint users_email_uindex unique (email),
     constraint users_id_uindex unique (id)
