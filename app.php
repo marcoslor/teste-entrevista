@@ -8,10 +8,14 @@ use PacientesSys\Controllers\PatientsViewController;
 use PacientesSys\Controllers\RegisterViewController;
 use PacientesSys\Utils\AuthGuard;
 
-$db = parse_url(getenv("DATABASE_URL"));
+$file = fopen(__DIR__ . '/.env', 'rb');
 
-$_ENV['DB_DRIVER'] = 'sqlite';
-$_ENV['DB_HOST'] = $db['app.sqlite'];
+if ($file) {
+    while (false !== ($line = fgets($file))) {
+        $line = explode('=', trim($line));
+        $_ENV[$line[0]] = $line[1];
+    }
+}
 
 session_start();
 
@@ -53,19 +57,6 @@ $router->on('GET', '/', static function () {
 })->on('POST', '/pacientes/put', function () {
     AuthGuard::redirectIfNotLoggedIn();
     (new PatientsViewController())->put();
-})->on('GET', '/migrate', function () {
-
-    try {
-        $database = new SQLite3('app.sqlite');
-
-        // run query from sql file
-        $sql = file_get_contents('docker/db/create_db.sql');
-        $database->exec($sql);
-        $database->close();
-    } catch (Exception $e) {
-        echo $e->getMessage();
-    }
-
 });
 
 $router->default = '/';
