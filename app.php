@@ -8,14 +8,8 @@ use PacientesSys\Controllers\PatientsViewController;
 use PacientesSys\Controllers\RegisterViewController;
 use PacientesSys\Utils\AuthGuard;
 
-$file = fopen(__DIR__ . '/.env', 'rb');
-
-if ($file) {
-    while (false !== ($line = fgets($file))) {
-        $line = explode('=', trim($line));
-        $_ENV[$line[0]] = $line[1];
-    }
-}
+$_ENV['DB_DRIVER'] = getenv('DB_DRIVER');
+$_ENV['DB_HOST'] = getenv('DB_HOST');
 
 session_start();
 
