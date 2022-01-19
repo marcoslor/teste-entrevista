@@ -6,7 +6,7 @@ Aplicação feita para um processo de seleção de uma vaga de dev. PHP.
 
 ---
 
-Demo rodando **temporariamente** em: [http://ec2-52-67-64-251.sa-east-1.compute.amazonaws.com](http://ec2-52-67-64-251.sa-east-1.compute.amazonaws.com)
+Demo rodando **temporariamente** em: [https://app-pacientes-sys.herokuapp.com](https://app-pacientes-sys.herokuapp.com)
 
 DDL do banco de dados em: [`docker/db/create_db.sql`](docker/db/create_db.sql)
 

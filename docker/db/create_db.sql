@@ -26,8 +26,6 @@ create table if not exists patients
     primary key (id, user_id),
     constraint patients_id_registration_uindex
         unique (id, registration),
-    constraint patients_registration_id_uindex
-        unique (registration, id),
     constraint patients_user_id_registration_uindex
         unique (user_id, registration),
     constraint patients_users_id_fk
