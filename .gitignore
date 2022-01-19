@@ -40,3 +40,8 @@ Temporary Items
 ### PhpStorm ###
 
 .idea/
+*.sqlite
+
+vendor/
+!vendor/composer/
+!vendor/autoload.php
